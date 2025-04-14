@@ -43,5 +43,6 @@
 * sudo chmod +x /usr/local/bin/docker-compose
 * #Add ubuntu user into docker group
 * sudo usermod -a -G docker ubuntu
-  
+###### En sonda ise Launch bastık ve EC2 Instance oluştu
+#### Sonu
 
