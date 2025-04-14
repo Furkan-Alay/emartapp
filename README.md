@@ -20,7 +20,7 @@
 * Launch instance bastık ve EC2 Instance için isim verdik.
 * Ubuntu AMI seçtik.
 * Instance type için "t3.medium" seçmemiz lazım çünkü docker engine kurmak ve build,run işlemi için yeterli depolama alanına sahip olmamız gerekiyor.
-* Key-pair oluşturduk.("RSA",".pem" türünü seçmemiz gerekiyor.)
+* Key-pair oluşturduk.("RSA",".pem" türünü seçmemiz gerekiyor.).Oluşan Key-pair yerele indirdik.
 * Network Settingsk kısmında "MY IP" seçeneğini seçtik."Allow HTTP traffic from the internet" seçtik.
 * 20GB Root Volume seçtik.
 * Bizler sıfırdan EC2 Instance oluşturduğumuz için Instance içerisine Docker engine ve Docker compose indirmemiz gerekiyor.Ayrıca "ubuntu" kullanıcısını "Docker" grubuna eklememiz gerekiyor.Bu işlemleri "User Data" kısmından yapabiliriz.Aşağıdaki kodu "User data" kısmına yapıştırın böylece bu komutlar boot işleminde çalışarak istediğimiz paketleri indirecektir. 
@@ -44,5 +44,21 @@
 * #Add ubuntu user into docker group
 * sudo usermod -a -G docker ubuntu
 ###### En sonda ise Launch bastık ve EC2 Instance oluştu
-#### Sonu
-
+* EC2 Instance oluştuktan sonra Public IP adresini kopyaladık.
+* ssh -i Downloads/dockerkey.pem ubuntu@18.191.226.63 (Burada key-pair indirdiğimiz yer ve Public IP adresleri bizde farklı olacaktır.Ona göre bu komutu düzenleyin)
+* git clone https://github.com/Furkan-Alay/emartapp.git
+* cd emartapp/
+* docker-compose build
+* docker-compose up
+###### AWS EC2 Instance içerisine tekrar girdik ve Public IP adresini kopyaladık.
+* http://18.191.226.63:80 (burada Public Ip adresimiz farklı olacaktır ":80" kısmına dokunmuyoruz)
+###### Böylece e-ticaret sitemize giriş yapmış olduk.Sitemiz çalıştığına göre şimdi EC2 Instance ve docker durdulalım
+* Terminalin içerisindeyken "ctrl+C" kombinasyonu yaptığımızda contianers lar durmuş olacaktır.
+* docker-compose up -d (bu komutla containers lar tekrardan çalışacaktır)
+* docker-compose down (bu komutla tüm containers lar duracaktır ve silinecektir)
+* Bizler kendi E-ticaret sistemimizi docker ile run etmek istersek buradaki kodları kullanabiliriz.Bunun için kaynak kodu VSCode ile açıp gerekli değişiklikleri yaptıktan sonra
+* git pull (bu komut yapılan değişiklikleri çekecektir.)
+* docker-compose build (Değişiklikler uygulanacaktır)
+###### AWS EC2 Instance durdurmamız gerekiyor çünkü oluşturduğumuz "t3.medium" ücretli bir Makine olacaktır.EC2 Instance üzerine tıklayıp "Actions" basıp "Stop" basmamız gerekiyor. Daha sonra "Delete" basarsak silinecektir.
+###### Teşekkürler :)
+ 
