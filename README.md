@@ -25,7 +25,7 @@
 * 20GB Root Volume seçtik.
 * Bizler sıfırdan EC2 Instance oluşturduğumuz için Instance içerisine Docker engine ve Docker compose indirmemiz gerekiyor.Ayrıca "ubuntu" kullanıcısını "Docker" grubuna eklememiz gerekiyor.Bu işlemleri "User Data" kısmından yapabiliriz.Aşağıdaki kodu "User data" kısmına yapıştırın böylece bu komutlar boot işleminde çalışarak istediğimiz paketleri indirecektir. 
 * #!/bin/bash
-* Install docker on Ubuntu
+* #Install docker on Ubuntu
 * sudo apt-get update
 * sudo apt-get install \
 * ca-certificates \
@@ -36,11 +36,12 @@
 * echo \
 * "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
 * $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-* Install docker-compose
+* #Install docker-compose
 * sudo apt-get update
 * sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 * sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 * sudo chmod +x /usr/local/bin/docker-compose
-* Add ubuntu user into docker group
+* #Add ubuntu user into docker group
 * sudo usermod -a -G docker ubuntu
+  
 
