@@ -1,64 +1,58 @@
-# emart-app Projeme hoşgeldiniz bu projem micro-servis yapısına sahip bir e-ticaret sitesini konteynerleştirmeden oluşmaktadır.
-## Proje için gerekli olan docker ve container kodlarını kendim yazmış bulunmaktayım.
-## E-Ticaret sitenizi kodlarımda gerekli düzenlemeler yaparak konteynerleştirebilirsiniz.
-### Projenin çalışması için vereceğim basit talimatları takip etmelisiniz.
-* Buradaki kaynak kodumuzu açtık.
-* Kaynak kodun "https" linkini kopyaladık.
-* Gitbash terminali yüklü değilse kuralım ve açalım.Buradaki kodları Terminale yazalım
-* mkdir -p /f/microsvc (C klasörü varsa ona göre kodları yazın).
-* cd /f/microsvc
-* git clone https://github.com/Furkan-Alay/emartapp.git
-* Şimdi ise kaynak kodumuzun ssh linkini kopyaladık.
-* git clone git@github.com:Furkan-Alay/emartapp.git
-* ls
-* cd emartapp/
-* Vscode kurmadıysanız indirin.
-* code . (Bu komutla beraber Kaynak kodumuzu VSCode ile açmış olacağız)
-* AWS Hesabınız yoksa oluşturmalısınız.AWS kısmından Sanal makine oluşturmak istemiyorsanız ve yerel makinede çalıştırmak istiyorsanız Yerel makinenize docker engine ve docker kurulumunu yapmış olmanız gerekiyor.
-### Bizler build işlemi hızlı olması için AWS'te bir EC2 Instance oluşturacağız.
-* AWS Hesabımızı açmamız gerekiyor.
-* Launch instance bastık ve EC2 Instance için isim verdik.
-* Ubuntu AMI seçtik.
-* Instance type için "t3.medium" seçmemiz lazım çünkü docker engine kurmak ve build,run işlemi için yeterli depolama alanına sahip olmamız gerekiyor.
-* Key-pair oluşturduk.("RSA",".pem" türünü seçmemiz gerekiyor.).Oluşan Key-pair yerele indirdik.
-* Network Settingsk kısmında "MY IP" seçeneğini seçtik."Allow HTTP traffic from the internet" seçtik.
-* 20GB Root Volume seçtik.
-* Bizler sıfırdan EC2 Instance oluşturduğumuz için Instance içerisine Docker engine ve Docker compose indirmemiz gerekiyor.Ayrıca "ubuntu" kullanıcısını "Docker" grubuna eklememiz gerekiyor.Bu işlemleri "User Data" kısmından yapabiliriz.Aşağıdaki kodu "User data" kısmına yapıştırın böylece bu komutlar boot işleminde çalışarak istediğimiz paketleri indirecektir. 
-* #!/bin/bash
-* #Install docker on Ubuntu
-* sudo apt-get update
-* sudo apt-get install \
-* ca-certificates \
-* curl \
-* gnupg \
-* lsb-release -y
-* curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-* echo \
-* "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-* $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-* #Install docker-compose
-* sudo apt-get update
-* sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-* sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-* sudo chmod +x /usr/local/bin/docker-compose
-* #Add ubuntu user into docker group
-* sudo usermod -a -G docker ubuntu
-###### En sonda ise Launch bastık ve EC2 Instance oluştu
-* EC2 Instance oluştuktan sonra Public IP adresini kopyaladık.
-* ssh -i Downloads/dockerkey.pem ubuntu@18.191.226.63 (Burada key-pair indirdiğimiz yer ve Public IP adresleri bizde farklı olacaktır.Ona göre bu komutu düzenleyin)
-* git clone https://github.com/Furkan-Alay/emartapp.git
-* cd emartapp/
-* docker-compose build
-* docker-compose up
-###### AWS EC2 Instance içerisine tekrar girdik ve Public IP adresini kopyaladık.
-* http://18.191.226.63:80 (burada Public Ip adresimiz farklı olacaktır ":80" kısmına dokunmuyoruz)
-###### Böylece e-ticaret sitemize giriş yapmış olduk.Sitemiz çalıştığına göre şimdi EC2 Instance ve docker durdulalım
-* Terminalin içerisindeyken "ctrl+C" kombinasyonu yaptığımızda contianers lar durmuş olacaktır.
-* docker-compose up -d (bu komutla containers lar tekrardan çalışacaktır)
-* docker-compose down (bu komutla tüm containers lar duracaktır ve silinecektir)
-* Bizler kendi E-ticaret sistemimizi docker ile run etmek istersek buradaki kodları kullanabiliriz.Bunun için kaynak kodu VSCode ile açıp gerekli değişiklikleri yaptıktan sonra
-* git pull (bu komut yapılan değişiklikleri çekecektir.)
-* docker-compose build (Değişiklikler uygulanacaktır)
-###### AWS EC2 Instance durdurmamız gerekiyor çünkü oluşturduğumuz "t3.medium" ücretli bir Makine olacaktır.EC2 Instance üzerine tıklayıp "Actions" basıp "Stop" basmamız gerekiyor. Daha sonra "Delete" basarsak silinecektir.
-###### Teşekkürler :)
- 
+# 📦 EMart Microservices Application
+
+Welcome to the **EMart Microservices Project** — a containerized e-commerce application built with a microservices architecture using **Docker** and **Docker Compose**.
+
+---
+
+## 📌 Project Overview
+
+This project containerizes a microservices-based e-commerce site. You can easily deploy and run your own system by making necessary adjustments in the source code.
+
+---
+
+## 📥 Requirements
+
+- **Git Bash** terminal (for Windows)
+- **Visual Studio Code**
+- **Docker Engine** & **Docker Compose**
+- An **AWS Account** (optional if deploying locally)
+
+---
+
+## 📦 Project Structure
+
+- **client/** — Frontend application
+- **javaapi/** — Java-based backend API service
+- **nodeapi/** — Node.js-based backend API service
+- **kkartchart/** — Additional microservice
+- **nginx/** — Reverse proxy configuration
+- **docker-compose.yaml** — Docker Compose configuration file
+- **Dockerfile** — Custom container image builds
+- **Jenkinsfile** — CI/CD pipeline configuration (optional)
+
+---
+
+## 🚀 How to Deploy on AWS EC2
+
+1. Create an AWS EC2 instance  
+   - Choose **Ubuntu AMI**
+   - Instance Type: `t3.medium`
+   - Key Pair: Generate a new **.pem** key file
+   - Network Settings:  
+     - Enable **My IP** access  
+     - Allow **HTTP traffic from the internet**
+   - Set **Root Volume** to **20GB**
+   - Add the following **User Data** script during instance setup:
+
+```bash
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg lsb-release -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo usermod -a -G docker ubuntu
+```
